@@ -1,0 +1,92 @@
+LP DE 72H DO WAGNER LIMA - TERCEIRA VERSAO
+Pacote para subir na hospedagem. Gerado em 06/10/2026.
+
+Esta e a versao mais simples da pagina: sem efeito de rolagem, texto
+maior, metade do conteudo, e o titulo principal passa a ser
+"Site em 6x sem juros no boleto". Ela SUBSTITUI a versao que esta no ar
+hoje (a segunda, de 15/09/2026). E so sobrescrever.
+
+
+COMO SUBIR
+
+Jogue o conteudo desta pasta na raiz do subdominio, no lugar dos
+arquivos atuais. Nao crie uma subpasta: o index.html tem que ficar na
+raiz. Nao precisa build, nao precisa node, nao precisa banco. E HTML
+estatico.
+
+Depois de subir, limpe o cache da hospedagem (na Hostinger: painel,
+Desempenho, Cache, Limpar), senao a versao antiga continua aparecendo
+por algumas horas.
+
+
+O PIXEL DA META - IMPORTANTE
+
+O pixel ja vem instalado dentro do index.html, na linha 78:
+
+    window.META_PIXEL_ID = '1094567569816002';
+
+NAO cole outro codigo de pixel por cima. Na versao que esta no ar hoje
+existe um segundo bloco de pixel colado no <head> (ID 1421580023217880),
+que dispara PageView antes de a pessoa aceitar os cookies e duplica a
+contagem dos eventos. Ao subir esta versao, esse bloco extra some, e
+deve continuar fora.
+
+Se o pixel certo for o 1421580023217880, e so trocar o numero na linha
+78. Um pixel so, nesse lugar.
+
+O que o pixel da pagina faz (mesmo codigo da versao anterior, conferido
+no navegador em 15/09/2026):
+
+  - PageView dispara quando a pessoa aceita os cookies na faixa da LGPD.
+    Antes disso o pixel fica em "revoke" e nao envia nada, que e o que a
+    lei pede.
+  - Lead dispara em todo clique de botao que leva pro WhatsApp, que e a
+    conversao desta pagina, com a origem do clique e a forma de pagamento.
+  - Para conferir depois de subir: abra a pagina, aceite os cookies,
+    clique num botao de WhatsApp e olhe no Gerenciador de Eventos da Meta,
+    ou use a extensao Meta Pixel Helper no Chrome.
+
+
+TAG DO GOOGLE
+
+O Google Tag Manager continua instalado, container GTM-NJDBRFZC, igual
+a versao anterior. Os disparos de clique no WhatsApp estao configurados
+dentro dele, entao avise antes de trocar.
+
+
+O ENDERECO DENTRO DOS ARQUIVOS
+
+O endereco site.seugestordemarketing.com.br esta escrito nas tags que o
+Google e as redes sociais leem. Se o subdominio continuar o mesmo, nao
+precisa mexer. Se mudar, troque nestes arquivos:
+
+    index.html    30 ocorrencias
+    robots.txt     2 ocorrencias
+    sitemap.xml    2 ocorrencias
+    llms.txt       1 ocorrencia
+
+
+O QUE TEM AQUI
+
+  index.html            a pagina
+  404.html              pagina de erro
+  assets/img/           imagens (logo, foto, print dos sites, preview)
+  favicon.ico, wl-simbolo-3.png, wl-simbolo-3.ico, apple-touch-icon.png
+                        icones
+  robots.txt            libera os buscadores, inclusive os de IA
+  sitemap.xml           mapa do site
+  llms.txt              resumo da pagina para buscador com IA
+  .htaccess             cache e compressao (Apache e LiteSpeed)
+  assets/.htaccess      cache das imagens
+  _headers              a mesma coisa no formato da Cloudflare.
+                        Nao faz nada fora da Cloudflare, pode apagar.
+
+
+O QUE NAO MUDAR SEM COMBINAR
+
+  o numero do WhatsApp: 55 11 94170 8181
+  o container do GTM e o pixel
+  os precos e as condicoes do parcelado
+  o texto da pagina
+
+Qualquer duvida, chama.
