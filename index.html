@@ -70,12 +70,18 @@ window.dataLayer = window.dataLayer || [];
      MEDICAO: Pixel da Meta (Facebook e Instagram)
      Vazio nao carrega nada. Cole o ID numerico do pixel abaixo.
      Respeita a mesma resposta do banner de consentimento do topo:
-     enquanto a pessoa nao aceita, o pixel fica em 'revoke' e nao envia
-     nada; ao aceitar, vai o PageView. A conversao (clique no WhatsApp)
-     sai como evento Lead, com a origem e a forma de pagamento.
+     enquanto a pessoa nao aceita, o pixel fica em 'revoke' e o PageView
+     espera; ao aceitar, vai o PageView. A conversao (clique no WhatsApp)
+     sai SEMPRE como evento Lead, aceitando ou nao, com a origem e a forma
+     de pagamento, para os dois pixels da lista abaixo.
+     Nao cole outro codigo de pixel por cima: acrescente o ID na lista.
      ============================================================ -->
 <script>
-window.META_PIXEL_ID = '1094567569816002';   /* pixel "site LP", BM Wagner Lima Impressao e Editoracao */
+window.META_PIXEL_IDS = [
+  '1094567569816002',   /* pixel "site LP", BM Wagner Lima Impressao e Editoracao */
+  '1421580023217880'    /* pixel "Venda LP", mesmo BM */
+];
+window.META_PIXEL_ID = window.META_PIXEL_IDS[0];
 (function(f,b,e,v,n,t,s){
   if (!window.META_PIXEL_ID) return;
   if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -89,7 +95,7 @@ window.META_PIXEL_ID = '1094567569816002';   /* pixel "site LP", BM Wagner Lima 
   if (!window.META_PIXEL_ID || !window.fbq) return;
   var aceito = (window.WL_CONSENTIMENTO === 'aceito');
   fbq('consent', aceito ? 'grant' : 'revoke');
-  fbq('init', window.META_PIXEL_ID);
+  window.META_PIXEL_IDS.forEach(function(id){ fbq('init', id); });
   if (aceito) fbq('track', 'PageView');
 })();
 </script>
@@ -923,9 +929,15 @@ document.addEventListener('click', function(ev){
     texto_do_botao: (a.textContent || '').trim().slice(0, 60),
     destino: a.href
   });
-  /* Pixel da Meta: o clique no WhatsApp e a conversao da pagina, entao sai como Lead. */
+  /* Pixel da Meta: o clique no WhatsApp e a conversao da pagina, entao sai como Lead,
+     para todos os pixels iniciados, mesmo sem aceite da faixa de cookies.
+     Sem aceite: libera so este evento e volta ao 'revoke' em seguida. */
   if (window.fbq && window.META_PIXEL_ID){
+    var semAceite = (window.WL_CONSENTIMENTO !== 'aceito');
+    try { if (localStorage.getItem('wl_consentimento') === 'aceito') semAceite = false; } catch(e){}
+    if (semAceite) fbq('consent', 'grant');
     fbq('track', 'Lead', { content_name: origem, content_category: forma });
+    if (semAceite) fbq('consent', 'revoke');
   }
   /* Evento de checkout, pedido no anexo tecnico. Fica separado do clique_whatsapp
      de proposito: aquele ja esta ligado no Gerenciador de Tags e mede TODO clique
